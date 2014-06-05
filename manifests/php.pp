@@ -85,6 +85,8 @@ define newrelic::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
+    provider => dpkg,
+    source   => "puppet:///global/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb",
     require => Class['newrelic::params'],
   }
 
