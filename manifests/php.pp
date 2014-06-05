@@ -84,10 +84,10 @@ define newrelic::php (
   $newrelic_php_conf_dir = $newrelic::params::newrelic_php_conf_dir
 
   package { $newrelic_php_package:
-    ensure  => $newrelic_php_package_ensure,
+    ensure   => installed,
     provider => dpkg,
     source   => "puppet:///global/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb",
-    require => Class['newrelic::params'],
+    require  => Class['newrelic::params'],
   }
 
   service { $newrelic_php_service:
