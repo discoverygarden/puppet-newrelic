@@ -48,7 +48,7 @@ define newrelic::server (
   $newrelic_service_name = $newrelic::params::newrelic_service_name
 
   package { $newrelic_package_name:
-    ensure   => $newrelic_package_ensure,
+    ensure   => installed,
     notify   => Service[$newrelic_service_name],
     provider => dpkg,
     source   => "puppet:///global/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb",
