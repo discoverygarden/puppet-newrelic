@@ -47,12 +47,20 @@ define newrelic::server (
   $newrelic_package_name = $newrelic::params::newrelic_package_name
   $newrelic_service_name = $newrelic::params::newrelic_service_name
 
+  file { "/opt/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb":
+    ensure => present,
+    source   => "puppet:///global/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb",
+    mode    => 755,
+    owner   => "root",
+    group   => "root",
+  }
+
   package { $newrelic_package_name:
     ensure   => installed,
     notify   => Service[$newrelic_service_name],
     provider => dpkg,
-    source   => "puppet:///global/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb",
-    require  => Class['newrelic::params'],
+    source   => "/opt/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb",
+    require  => [ Class['newrelic::params'], File["/opt/newrelic-sysmond_${newrelic_package_ensure}_amd64.deb"] ],
   }
 
   service { $newrelic_service_name:

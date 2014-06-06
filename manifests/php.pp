@@ -83,11 +83,19 @@ define newrelic::php (
   $newrelic_php_service  = $newrelic::params::newrelic_php_service
   $newrelic_php_conf_dir = $newrelic::params::newrelic_php_conf_dir
 
+  file { "/opt/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb":
+    ensure => present,
+    source   => "puppet:///global/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb",
+    mode    => 755,
+    owner   => "root",
+    group   => "root",
+  }
+
   package { $newrelic_php_package:
     ensure   => installed,
     provider => dpkg,
-    source   => "puppet:///global/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb",
-    require  => Class['newrelic::params'],
+    source   => "/opt/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb",
+    require  => [ Class['newrelic::params'], File["/opt/newrelic-php5_${newrelic_php_package_ensure}_amd64.deb"] ],
   }
 
   service { $newrelic_php_service:
